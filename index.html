@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="robots" content="noindex">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UPI Payment</title>
+  <style>
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+    body {
+      background: #f5f6fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .payment-card {
+      background: #fff;
+      border-radius: 12px;
+      max-width: 380px;
+      width: 100%;
+      padding: 30px 25px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .payment-card:hover { transform: translateY(-3px); }
+
+    h2 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    p.description {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 25px;
+    }
+
+    a.pay-button {
+      display: inline-block;
+      background: #635bff;
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 14px 0;
+      width: 100%;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    a.pay-button:hover { background: #7a72ff; }
+
+    .qr-section {
+      margin-top: 20px;
+    }
+
+    .qr-section p {
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    .qr-section img {
+      width: 180px;
+      height: 180px;
+      border-radius: 10px;
+      border: 2px solid #ddd;
+    }
+
+    @media(max-width: 400px){
+      .payment-card { padding: 25px 15px; }
+      h2 { font-size: 1.5rem; }
+      a.pay-button { padding: 12px 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="payment-card">
+    <h2>Pay SANGEETH M K</h2>
+    <p class="description">Click "Pay Now" to open your UPI app and enter the amount.</p>
+
+    <a class="pay-button" href="upi://pay?pa=9400109413@yescred&pn=SANGEETH M K&tn=Payment&cu=INR">
+      Pay Now
+    </a>
+
+    <div class="qr-section">
+      <p>Or scan QR code</p>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=upi://pay?pa=9400109413@yescred&pn=SANGEETH M K&tn=Payment&cu=INR&size=200x200" alt="UPI QR">
+    </div>
+  </div>
+</body>
+</html>
