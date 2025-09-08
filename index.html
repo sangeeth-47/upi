@@ -2,9 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="robots" content="noindex">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UPI Payment</title>
   <!-- Favicon for browsers -->
   <link rel="icon" type="image/png" sizes="16x16" href="icons/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32x32.png">
@@ -19,97 +17,600 @@
 
   <!-- Web app manifest -->
   <link rel="manifest" href="icons/site.webmanifest">
+  <title>UPI Payment | SANGEETH M K</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    /* Reset */
-    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --primary-light: #818cf8;
+      --secondary: #10b981;
+      --dark: #1f2937;
+      --light: #f9fafb;
+      --gray: #6b7280;
+      --gray-light: #e5e7eb;
+      --border-radius: 20px;
+      --shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
 
     body {
-      background: #f5f6fa;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #f0f4ff 0%, #e6e6ff 100%);
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
       padding: 20px;
+      color: var(--dark);
+      overflow-x: hidden;
+    }
+
+    /* Animated background elements */
+    .bg-circle {
+      position: fixed;
+      border-radius: 50%;
+      opacity: 0.1;
+      z-index: -1;
+      animation: float 15s infinite ease-in-out;
+    }
+    
+    .circle-1 {
+      width: 300px;
+      height: 300px;
+      background: var(--primary);
+      top: 10%;
+      left: 5%;
+      animation-delay: 0s;
+    }
+    
+    .circle-2 {
+      width: 200px;
+      height: 200px;
+      background: var(--secondary);
+      bottom: 15%;
+      right: 10%;
+      animation-delay: -5s;
+    }
+    
+    .circle-3 {
+      width: 150px;
+      height: 150px;
+      background: var(--primary-light);
+      top: 60%;
+      left: 15%;
+      animation-delay: -10s;
+    }
+
+    .container {
+      max-width: 440px;
+      width: 100%;
+      perspective: 1000px;
     }
 
     .payment-card {
-      background: #fff;
-      border-radius: 12px;
-      max-width: 380px;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-radius: var(--border-radius);
       width: 100%;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      transform-style: preserve-3d;
+      animation: cardAppear 0.8s ease-out forwards;
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .card-header {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+      color: white;
       padding: 30px 25px;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
       text-align: center;
-      transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
-    .payment-card:hover { transform: translateY(-3px); }
-
-    h2 {
-      font-size: 1.8rem;
-      margin-bottom: 10px;
-      color: #333;
+    .card-header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+      transform: rotate(30deg);
     }
 
-    p.description {
+    .profile-icon {
+      width: 100px;
+      height: 100px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+      position: relative;
+      z-index: 1;
+      animation: iconPulse 2s infinite ease-in-out;
+      overflow: hidden;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .profile-icon img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .card-header h2 {
+      font-weight: 600;
+      font-size: 1.6rem;
+      margin-bottom: 5px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-header p {
+      opacity: 0.9;
       font-size: 0.95rem;
-      color: #555;
-      margin-bottom: 25px;
+      position: relative;
+      z-index: 1;
     }
 
-    a.pay-button {
-      display: inline-block;
-      background: #635bff;
-      color: #fff;
+    .card-body {
+      padding: 30px;
+    }
+
+    .amount-input {
+      margin-bottom: 25px;
+      animation: slideIn 0.5s 0.3s forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .amount-input label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: var(--gray);
+      font-size: 0.95rem;
+    }
+
+    .input-group {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-group .icon {
+      position: absolute;
+      left: 15px;
+      color: var(--gray);
+      z-index: 1;
+    }
+
+    .amount-input input {
+      width: 100%;
+      padding: 16px 15px 16px 45px;
+      border: 2px solid var(--gray-light);
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+
+    .amount-input input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    /* Pay Now Button - Hidden on Desktop */
+    .pay-button {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--primary);
+      color: white;
       text-decoration: none;
       font-weight: 600;
-      padding: 14px 0;
+      padding: 18px;
       width: 100%;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      font-size: 1rem;
+      border-radius: 12px;
+      transition: var(--transition);
+      font-size: 1.05rem;
+      border: none;
+      cursor: pointer;
       margin-bottom: 20px;
+      animation: slideIn 0.5s 0.4s forwards;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
-    a.pay-button:hover { background: #7a72ff; }
+    .pay-button:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.2);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      margin: 30px 0;
+      color: var(--gray);
+      font-size: 0.9rem;
+      animation: fadeIn 0.8s 0.5s forwards;
+      opacity: 0;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--gray-light);
+    }
+
+    .divider span {
+      padding: 0 15px;
+    }
 
     .qr-section {
-      margin-top: 20px;
+      text-align: center;
+      animation: slideIn 0.5s 0.6s forwards;
+      opacity: 0;
+      transform: translateY(20px);
     }
 
     .qr-section p {
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 10px;
+      font-size: 0.95rem;
+      color: var(--gray);
+      margin-bottom: 20px;
+    }
+
+    .qr-container {
+      background: white;
+      padding: 20px;
+      border-radius: 16px;
+      display: inline-block;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--gray-light);
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .qr-container::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(to bottom right, rgba(99, 102, 241, 0.1), transparent);
+      transform: rotate(-15deg);
+      z-index: 0;
     }
 
     .qr-section img {
-      width: 180px;
-      height: 180px;
+      width: 200px;
+      height: 200px;
       border-radius: 10px;
-      border: 2px solid #ddd;
+      position: relative;
+      z-index: 1;
+      transition: var(--transition);
     }
 
-    @media(max-width: 400px){
-      .payment-card { padding: 25px 15px; }
-      h2 { font-size: 1.5rem; }
-      a.pay-button { padding: 12px 0; }
+    .qr-container:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .qr-container:hover img {
+      transform: scale(1.03);
+    }
+
+    /* Payment methods text */
+    .payment-methods-text {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin: 25px 0 15px;
+      animation: fadeIn 0.8s 0.7s forwards;
+      opacity: 0;
+    }
+
+    .payment-options {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 10px;
+      animation: fadeIn 0.8s 0.7s forwards;
+      opacity: 0;
+    }
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      background: var(--light);
+      border-radius: 12px;
+      color: var(--gray);
+      font-size: 1.4rem;
+      transition: var(--transition);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    }
+
+    .payment-option:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-3px) rotate(5deg);
+      box-shadow: 0 8px 15px rgba(79, 70, 229, 0.2);
+    }
+
+    .security-note {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 25px;
+      font-size: 0.85rem;
+      color: var(--gray);
+      animation: fadeIn 0.8s 0.8s forwards;
+      opacity: 0;
+    }
+
+    /* Animations */
+    @keyframes cardAppear {
+      0% {
+        opacity: 0;
+        transform: translateY(50px) rotateX(15deg);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) rotateX(0);
+      }
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotate(0deg);
+      }
+      33% {
+        transform: translateY(-20px) rotate(5deg);
+      }
+      66% {
+        transform: translateY(15px) rotate(-5deg);
+      }
+    }
+
+    @keyframes iconPulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.3);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      70% {
+        box-shadow: 0 0 0 15px rgba(255, 255, 255, 0);
+      }
+    }
+
+    @keyframes slideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+      }
+    }
+
+    /* Mobile responsiveness */
+    @media (max-width: 768px) {
+      .payment-card {
+        max-width: 90%;
+        margin: 0 auto;
+      }
+      
+      .card-header {
+        padding: 25px 20px;
+      }
+      
+      .card-body {
+        padding: 25px 20px;
+      }
+      
+      .profile-icon {
+        width: 90px;
+        height: 90px;
+      }
+      
+      .pay-button {
+        display: flex;
+      }
+      
+      .qr-section img {
+        width: 180px;
+        height: 180px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .payment-card {
+        max-width: 100%;
+      }
+      
+      .card-header h2 {
+        font-size: 1.4rem;
+      }
+      
+      .profile-icon {
+        width: 80px;
+        height: 80px;
+      }
+      
+      .qr-section img {
+        width: 160px;
+        height: 160px;
+      }
+      
+      .payment-option {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+      }
+      
+      .payment-methods-text {
+        font-size: 0.85rem;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="payment-card">
-    <h2>Pay SANGEETH M K</h2>
-    <p class="description">Click "Pay Now" to open your UPI app and enter the amount.</p>
+  <!-- Animated background elements -->
+  <div class="bg-circle circle-1"></div>
+  <div class="bg-circle circle-2"></div>
+  <div class="bg-circle circle-3"></div>
 
-    <a class="pay-button" href="upi://pay?pa=sangeethsmk@oksbi&pn=SANGEETH M K&tn=Payment&cu=INR">
-      Pay Now
-    </a>
+  <div class="container">
+    <div class="payment-card">
+      <div class="card-header">
+        <div class="profile-icon">
+          <!-- Replace with your custom profile image URL -->
+          <img src="https://sangeeth47.in/assets/imgs/sangeeth.jpg" alt="Profile">
+        </div>
+        <h2>SANGEETH M K</h2>
+        <p>Secure UPI Payment</p>
+      </div>
+      
+      <div class="card-body">
+        <div class="amount-input">
+          <label for="amount">Enter Amount (₹)</label>
+          <div class="input-group">
+            <div class="icon">
+              <i class="fas fa-rupee-sign"></i>
+            </div>
+            <input type="number" id="amount" placeholder="0.00" min="1" step="1">
+          </div>
+        </div>
+        
+        <!-- Pay Now Button - Hidden on desktop, shown on mobile -->
+        <a class="pay-button" href="upi://pay?pa=sangeethsmk@oksbi&pn=SANGEETH M K&tn=Payment&cu=INR" id="payLink">
+          <i class="fas fa-paper-plane"></i>
+          Pay Now
+        </a>
+        
+        <div class="divider">
+          <span>SCAN QR CODE</span>
+        </div>
+        
+        <div class="qr-section">
+          <p>Scan with any UPI app to pay</p>
+          <div class="qr-container">
+            <img id="qrCode" src="https://api.qrserver.com/v1/create-qr-code/?data=upi://pay?pa=sangeethsmk@oksbi&pn=SANGEETH%20M%20K&tn=Payment&cu=INR&size=200x200" alt="UPI QR Code">
+          </div>
+          
+          <!-- Added text above payment options -->
+          <p style="margin-top:20px; font-size:0.9rem; color:var(--gray);">
+              These payments are supported (and more)
+          </p>
 
-    <div class="qr-section">
-      <p>Or scan QR code</p>
-      <img src="https://api.qrserver.com/v1/create-qr-code/?data=upi://pay?pa=sangeethsmk@oksbi&pn=SANGEETH M K&tn=Payment&cu=INR&size=200x200" alt="UPI QR">
+          <div class="payment-options">
+            <!-- Google Pay -->
+            <a href="#" class="payment-option" title="Google Pay">
+              <i class="fab fa-google-pay"></i>
+            </a>
+            
+            <!-- Amazon Pay -->
+            <a href="#" class="payment-option" title="Amazon Pay">
+              <i class="fab fa-amazon-pay"></i>
+            </a>
+            
+            <!-- CRED (using credit-card icon since no direct brand icon in Font Awesome) -->
+            <a href="#" class="payment-option" title="CRED">
+              <i class="fas fa-credit-card"></i>
+            </a>
+            
+            <!-- BHIM UPI (using university icon as representation) -->
+            <a href="#" class="payment-option" title="BHIM UPI">
+              <i class="fas fa-university"></i>
+            </a>
+            
+            <!-- Paytm (using wallet icon since no direct Paytm icon in Font Awesome) -->
+            <a href="#" class="payment-option" title="Paytm">
+              <i class="fas fa-wallet"></i>
+            </a>
+          </div>
+
+          
+          <div class="security-note">
+            <i class="fas fa-shield-alt"></i>
+            <span>Secure & Encrypted Payment</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const amountInput = document.getElementById('amount');
+      const payLink = document.getElementById('payLink');
+      const qrCode = document.getElementById('qrCode');
+      
+      // Function to update both payment link and QR code
+      function updatePaymentDetails(amount) {
+        let baseUrl = "upi://pay?pa=sangeethsmk@oksbi&pn=SANGEETH%20M%20K&tn=Payment&cu=INR";
+        
+        if (amount) {
+          baseUrl += "&am=" + amount;
+        }
+        
+        // Update payment link
+        payLink.setAttribute('href', baseUrl);
+        
+        // Update QR code
+        qrCode.src = "https://api.qrserver.com/v1/create-qr-code/?data=" + 
+                     encodeURIComponent(baseUrl) + "&size=200x200";
+      }
+      
+      // Update payment details when amount is entered
+      amountInput.addEventListener('input', function() {
+        updatePaymentDetails(this.value);
+      });
+      
+      // Focus amount input on load
+      setTimeout(() => {
+        amountInput.focus();
+      }, 500);
+      
+      // Add floating animation to payment options on hover
+      const paymentOptions = document.querySelectorAll('.payment-option');
+      paymentOptions.forEach(option => {
+        option.addEventListener('mouseenter', function() {
+          this.style.transform = 'translateY(-5px)';
+        });
+        
+        option.addEventListener('mouseleave', function() {
+          this.style.transform = 'translateY(0)';
+        });
+      });
+    });
+  </script>
 </body>
 </html>
